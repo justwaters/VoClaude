@@ -28,22 +28,21 @@ Auth: every request must carry the daemon token, either as
 
 from __future__ import annotations
 
-import argparse
 import asyncio
 import base64
 import json
 import logging
-import os
 import secrets
 from contextlib import aclosing, asynccontextmanager
-from pathlib import Path
 
 import uvicorn
 from fastapi import FastAPI, HTTPException, Request, WebSocket, WebSocketDisconnect
 
-from csm_engine import CSMEngine, SentenceChunker, to_pcm16
-from kokoro_engine import KokoroEngine
-from session_manager import (
+from . import __version__, config
+from .csm_engine import CSMEngine, SentenceChunker, to_pcm16
+from .discovery import Advertiser
+from .kokoro_engine import KokoroEngine
+from .session_manager import (
     SessionBusyError,
     SessionManager,
     StateStore,
@@ -52,21 +51,21 @@ from session_manager import (
     ToolUse,
     TurnResult,
 )
-from stt_engine import STTEngine
+from .stt_engine import STTEngine
 
 log = logging.getLogger("voclaude")
 
-BASE_DIR = Path(__file__).resolve().parent
 TTSEngine = CSMEngine | KokoroEngine
 AUDIO_CHUNK_SECONDS = 1.0
 
 
 class Daemon:
-    def __init__(self, config_path: Path):
-        self.config = json.loads(config_path.read_text())
-        self.state = StateStore(BASE_DIR / "state.json")
-        self.token = self._resolve_token()
-        self.sessions = SessionManager(self.config.get("repos", {}), self.config.get("claude", {}), self.state)
+    def __init__(self, cfg: dict):
+        self.config = cfg
+        self.state = StateStore(config.STATE_PATH)
+        self.token = config.resolve_token(cfg)
+        self.sessions = SessionManager(cfg.get("repos", {}), cfg.get("claude", {}), self.state)
+        self._config_mtime = self._mtime()
 
         tts_cfg = self.config.get("tts", {})
         stt_cfg = self.config.get("stt", {})
@@ -80,16 +79,28 @@ class Daemon:
         if engine == "kokoro":
             return KokoroEngine(cfg.get("kokoro", {}))
         if engine == "csm":
-            return CSMEngine(cfg.get("csm", {}), BASE_DIR)
+            return CSMEngine(cfg.get("csm", {}), config.CONFIG_DIR)
         raise ValueError(f"Unknown tts.engine {engine!r}; expected 'kokoro' or 'csm'")
 
-    def _resolve_token(self) -> str:
-        token = os.environ.get("VOCLAUDE_TOKEN") or self.config.get("auth_token") or self.state.get("auth_token")
-        if not token:
-            # The daemon can run Bash in your repos; never serve it unauthenticated.
-            token = secrets.token_urlsafe(24)
-            self.state.set("auth_token", token)
-        return token
+    @staticmethod
+    def _mtime() -> float:
+        try:
+            return config.CONFIG_PATH.stat().st_mtime
+        except FileNotFoundError:
+            return 0.0
+
+    def refresh_repos(self) -> None:
+        """Pick up repos added or removed with `voclaude watch` / `unwatch` since startup."""
+        mtime = self._mtime()
+        if mtime == self._config_mtime:
+            return
+        self._config_mtime = mtime
+        try:
+            repos = config.load().get("repos", {})
+        except (OSError, json.JSONDecodeError) as exc:
+            log.warning("Couldn't reload %s: %s", config.CONFIG_PATH, exc)
+            return
+        self.sessions.sync(repos)
 
     def authorized(self, headers, query_params) -> bool:
         supplied = query_params.get("token") or ""
@@ -110,8 +121,15 @@ def create_app(daemon: Daemon) -> FastAPI:
     @asynccontextmanager
     async def lifespan(_: FastAPI):
         preload = asyncio.create_task(daemon.preload())
+        advertiser = Advertiser(daemon.config.get("port", 8000))
+        if daemon.config.get("discovery", True):
+            try:
+                await advertiser.start()
+            except Exception:
+                log.exception("Bonjour advertising failed; the app can still connect by address")
         yield
         preload.cancel()
+        await advertiser.stop()
 
     app = FastAPI(title="voclaude-daemon", lifespan=lifespan)
 
@@ -119,6 +137,7 @@ def create_app(daemon: Daemon) -> FastAPI:
     async def health():
         return {
             "ok": True,
+            "version": __version__,
             "tts_loaded": bool(daemon.tts and daemon.tts.loaded),
             "tts_error": str(daemon.tts.load_error) if daemon.tts and daemon.tts.load_error else None,
         }
@@ -127,6 +146,7 @@ def create_app(daemon: Daemon) -> FastAPI:
     async def list_sessions(request: Request):
         if not daemon.authorized(request.headers, request.query_params):
             raise HTTPException(status_code=401, detail="invalid token")
+        daemon.refresh_repos()
         return [
             {
                 "alias": repo.alias,
@@ -142,6 +162,7 @@ def create_app(daemon: Daemon) -> FastAPI:
         if not daemon.authorized(ws.headers, ws.query_params):
             await ws.close(code=1008, reason="invalid token")
             return
+        daemon.refresh_repos()
         if repo_alias not in daemon.sessions.repos:
             await ws.close(code=4404, reason=f"unknown repo '{repo_alias}'")
             return
@@ -350,25 +371,21 @@ class Connection:
                 pass  # socket already gone
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description="VoClaude daemon")
-    parser.add_argument("--config", default=os.environ.get("VOCLAUDE_CONFIG", BASE_DIR / "config.json"), type=Path)
-    parser.add_argument("--host")
-    parser.add_argument("--port", type=int)
-    parser.add_argument("--log-level", default="info")
-    args = parser.parse_args()
+def run(host: str | None = None, port: int | None = None, log_level: str = "info") -> None:
+    """Start the daemon with the user config (see `voclaude serve`)."""
+    logging.basicConfig(level=log_level.upper(), format="%(asctime)s %(levelname)s %(name)s: %(message)s")
+    cfg = config.load()
+    if port:
+        cfg["port"] = port
+    host = host or cfg.get("host", "0.0.0.0")
+    daemon = Daemon(cfg)
 
-    logging.basicConfig(level=args.log_level.upper(), format="%(asctime)s %(levelname)s %(name)s: %(message)s")
-    daemon = Daemon(args.config)
-    host = args.host or daemon.config.get("host", "0.0.0.0")
-    port = args.port or daemon.config.get("port", 8000)
-
-    log.info("Repos: %s", ", ".join(f"{r.alias} → {r.path}" for r in daemon.sessions.repos.values()))
+    repos = daemon.sessions.repos.values()
+    log.info("VoClaude %s — config %s", __version__, config.CONFIG_PATH)
+    if repos:
+        log.info("Watching: %s", ", ".join(f"{r.alias} → {r.path}" for r in repos))
+    else:
+        log.warning("No repos watched yet. Run `voclaude watch` inside a repo to add it.")
     log.info("Auth token: %s", daemon.token)
-    log.info("Client URL: ws://<this-host>:%d/ws/session/<repo_alias>", port)
 
-    uvicorn.run(create_app(daemon), host=host, port=port, log_level=args.log_level, ws_max_size=32 * 1024 * 1024)
-
-
-if __name__ == "__main__":
-    main()
+    uvicorn.run(create_app(daemon), host=host, port=cfg["port"], log_level=log_level, ws_max_size=32 * 1024 * 1024)

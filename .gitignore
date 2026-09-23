@@ -1,6 +1,7 @@
 # Python
 __pycache__/
 *.pyc
+.venv/
 daemon/.venv/
 daemon/state.json
 daemon/state.tmp

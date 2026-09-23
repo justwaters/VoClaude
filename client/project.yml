@@ -25,7 +25,12 @@ targets:
         CFBundleDisplayName: VoClaude
         NSMicrophoneUsageDescription: VoClaude records your voice while you hold the talk button so Claude can hear your request.
         NSSpeechRecognitionUsageDescription: VoClaude can transcribe your voice on this device before sending it to your daemon.
-        NSLocalNetworkUsageDescription: VoClaude connects to the voclaude-daemon running on your local network.
+        NSLocalNetworkUsageDescription: VoClaude finds and connects to voclaude daemons on your local network.
+        NSBonjourServices:
+          - _voclaude._tcp
+        # Calls keep running with the screen locked or the app in the background.
+        UIBackgroundModes:
+          - audio
         # Daemons are reached over plain ws:// on LAN / Tailscale IPs.
         NSAppTransportSecurity:
           NSAllowsArbitraryLoads: true
@@ -53,3 +58,24 @@ targets:
         ENABLE_PREVIEWS: YES
         "CODE_SIGN_ENTITLEMENTS[sdk=macosx*]": Config/VoClaude-macOS.entitlements
         ENABLE_HARDENED_RUNTIME: YES
+  VoClaudeTests:
+    type: bundle.unit-test
+    supportedDestinations: [iOS, macOS]
+    sources:
+      - VoClaudeTests
+    dependencies:
+      - target: VoClaude
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.1waters.VoClaudeTests
+        GENERATE_INFOPLIST_FILE: YES
+        # macOS app bundles keep the executable under Contents/MacOS.
+        "TEST_HOST[sdk=macosx*]": $(BUILT_PRODUCTS_DIR)/VoClaude.app/Contents/MacOS/VoClaude
+schemes:
+  VoClaude:
+    build:
+      targets:
+        VoClaude: all
+    test:
+      targets:
+        - VoClaudeTests

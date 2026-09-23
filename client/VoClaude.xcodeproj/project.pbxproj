@@ -8,31 +8,52 @@
 
 /* Begin PBXBuildFile section */
 		051EC64B9EEB8D1B3010D5C0 /* VoClaudeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597C682A3FA2CEBEC4029013 /* VoClaudeApp.swift */; };
+		1A1C9811B38D4262BAEBDAA7 /* CallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD70EEB258A613357D47D86E /* CallView.swift */; };
 		3DA299EB0AF43BE999B5761F /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF0A24F87D99323B7FED2121 /* AudioPlayer.swift */; };
 		52C60CA1F58D90AB71106C52 /* SessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2375EDE05A97368C52314C4A /* SessionStore.swift */; };
+		7674CC598F564F000D7C6B68 /* DaemonConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15841F06971FEDE911AFCA7E /* DaemonConnectView.swift */; };
 		7A4B0538FBD5A9C2BAA53A10 /* WebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5EAFC5179D2047FDAD37F /* WebSocketManager.swift */; };
 		7BDAC3DF5FB73F679DEA2C25 /* SessionEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AACCED17826675DFA49DB2 /* SessionEditorView.swift */; };
+		83CF2E6BDA6DD0EA7DDA2881 /* UtteranceDetectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A82BC601B30BA528E8486D5 /* UtteranceDetectorTests.swift */; };
+		A0D8A2C4E101A72C7371E159 /* CallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59BB5E09EB9489B897FBD7A /* CallController.swift */; };
 		A12E94661C0E43946F6D9A7D /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587E1D53CC4A92937FF7D930 /* Message.swift */; };
 		C9FB13C57171C34A786ED286 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8958C1DA3B9293178CF9DB6 /* MainView.swift */; };
 		CA49B10ACF1B6582710D2C60 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8CAA226FB34A1E471C394E99 /* Assets.xcassets */; };
 		D9CCFAE7EFAFF2B3E19D38C2 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29C526E6FA63CDFD3E1F474B /* Session.swift */; };
 		F5416FB25792866AB64D7894 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04740B60D63F681869C49A35 /* AudioRecorder.swift */; };
+		F9EBF6CE2DB85396D258E2AA /* DaemonBrowser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 372D01AC1A7AF1AA35BF67C4 /* DaemonBrowser.swift */; };
 		FAC9BF7117D88A52E9624A5B /* AudioVisualizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181A4770BAA6A25EEF2C2687 /* AudioVisualizerView.swift */; };
 		FCCD6855BD45C30DBA8E7B0C /* SessionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0CFCD7B7C8C72D1870F8583 /* SessionDetailView.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		F59014179EAAAE44A532E4D3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CDFAB29A9C3FEB49227DA4B3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0391EFFEE603E65F64423A2C;
+			remoteInfo = VoClaude;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		04740B60D63F681869C49A35 /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
+		15841F06971FEDE911AFCA7E /* DaemonConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaemonConnectView.swift; sourceTree = "<group>"; };
 		181A4770BAA6A25EEF2C2687 /* AudioVisualizerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioVisualizerView.swift; sourceTree = "<group>"; };
 		2375EDE05A97368C52314C4A /* SessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStore.swift; sourceTree = "<group>"; };
 		23AACCED17826675DFA49DB2 /* SessionEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionEditorView.swift; sourceTree = "<group>"; };
 		29C526E6FA63CDFD3E1F474B /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
+		2CEDCAA6B6C4E884DA46B1F1 /* VoClaudeTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = VoClaudeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		372D01AC1A7AF1AA35BF67C4 /* DaemonBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaemonBrowser.swift; sourceTree = "<group>"; };
+		3A82BC601B30BA528E8486D5 /* UtteranceDetectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtteranceDetectorTests.swift; sourceTree = "<group>"; };
 		4FF5EAFC5179D2047FDAD37F /* WebSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketManager.swift; sourceTree = "<group>"; };
 		587E1D53CC4A92937FF7D930 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		597C682A3FA2CEBEC4029013 /* VoClaudeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoClaudeApp.swift; sourceTree = "<group>"; };
 		6569501362FDD2E6F9BD8B67 /* VoClaude.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = VoClaude.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CAA226FB34A1E471C394E99 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C8958C1DA3B9293178CF9DB6 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		CD70EEB258A613357D47D86E /* CallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallView.swift; sourceTree = "<group>"; };
+		D59BB5E09EB9489B897FBD7A /* CallController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallController.swift; sourceTree = "<group>"; };
 		DF0A24F87D99323B7FED2121 /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		E0CFCD7B7C8C72D1870F8583 /* SessionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDetailView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -70,6 +91,7 @@
 			isa = PBXGroup;
 			children = (
 				4F7AE4F4491D5EF7631A852C /* VoClaude */,
+				99889E1F947A169FE2301420 /* VoClaudeTests */,
 				73F7A96E41BB75CD7766C7E4 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -78,6 +100,8 @@
 			isa = PBXGroup;
 			children = (
 				181A4770BAA6A25EEF2C2687 /* AudioVisualizerView.swift */,
+				CD70EEB258A613357D47D86E /* CallView.swift */,
+				15841F06971FEDE911AFCA7E /* DaemonConnectView.swift */,
 				C8958C1DA3B9293178CF9DB6 /* MainView.swift */,
 				E0CFCD7B7C8C72D1870F8583 /* SessionDetailView.swift */,
 				23AACCED17826675DFA49DB2 /* SessionEditorView.swift */,
@@ -89,8 +113,17 @@
 			isa = PBXGroup;
 			children = (
 				6569501362FDD2E6F9BD8B67 /* VoClaude.app */,
+				2CEDCAA6B6C4E884DA46B1F1 /* VoClaudeTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		99889E1F947A169FE2301420 /* VoClaudeTests */ = {
+			isa = PBXGroup;
+			children = (
+				3A82BC601B30BA528E8486D5 /* UtteranceDetectorTests.swift */,
+			);
+			path = VoClaudeTests;
 			sourceTree = "<group>";
 		};
 		B45619F71E32B7C336CDD0B8 /* Models */ = {
@@ -107,6 +140,8 @@
 			children = (
 				DF0A24F87D99323B7FED2121 /* AudioPlayer.swift */,
 				04740B60D63F681869C49A35 /* AudioRecorder.swift */,
+				D59BB5E09EB9489B897FBD7A /* CallController.swift */,
+				372D01AC1A7AF1AA35BF67C4 /* DaemonBrowser.swift */,
 				2375EDE05A97368C52314C4A /* SessionStore.swift */,
 				4FF5EAFC5179D2047FDAD37F /* WebSocketManager.swift */,
 			);
@@ -134,6 +169,24 @@
 			productReference = 6569501362FDD2E6F9BD8B67 /* VoClaude.app */;
 			productType = "com.apple.product-type.application";
 		};
+		95CA588064EABCB62907EB2E /* VoClaudeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 30CD57A3AD2CC8DE0418A6AC /* Build configuration list for PBXNativeTarget "VoClaudeTests" */;
+			buildPhases = (
+				1FF503E6FCCABD82856CED02 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0B49C806D4F0FD066A731488 /* PBXTargetDependency */,
+			);
+			name = VoClaudeTests;
+			packageProductDependencies = (
+			);
+			productName = VoClaudeTests;
+			productReference = 2CEDCAA6B6C4E884DA46B1F1 /* VoClaudeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -144,6 +197,10 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					0391EFFEE603E65F64423A2C = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					95CA588064EABCB62907EB2E = {
 						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
@@ -164,6 +221,7 @@
 			projectRoot = "";
 			targets = (
 				0391EFFEE603E65F64423A2C /* VoClaude */,
+				95CA588064EABCB62907EB2E /* VoClaudeTests */,
 			);
 		};
 /* End PBXProject section */
@@ -187,6 +245,10 @@
 				3DA299EB0AF43BE999B5761F /* AudioPlayer.swift in Sources */,
 				F5416FB25792866AB64D7894 /* AudioRecorder.swift in Sources */,
 				FAC9BF7117D88A52E9624A5B /* AudioVisualizerView.swift in Sources */,
+				A0D8A2C4E101A72C7371E159 /* CallController.swift in Sources */,
+				1A1C9811B38D4262BAEBDAA7 /* CallView.swift in Sources */,
+				F9EBF6CE2DB85396D258E2AA /* DaemonBrowser.swift in Sources */,
+				7674CC598F564F000D7C6B68 /* DaemonConnectView.swift in Sources */,
 				C9FB13C57171C34A786ED286 /* MainView.swift in Sources */,
 				A12E94661C0E43946F6D9A7D /* Message.swift in Sources */,
 				D9CCFAE7EFAFF2B3E19D38C2 /* Session.swift in Sources */,
@@ -198,7 +260,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1FF503E6FCCABD82856CED02 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				83CF2E6BDA6DD0EA7DDA2881 /* UtteranceDetectorTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0B49C806D4F0FD066A731488 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0391EFFEE603E65F64423A2C /* VoClaude */;
+			targetProxy = F59014179EAAAE44A532E4D3 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		7AD0C0795AF6AECD656BA5CE /* Debug */ = {
@@ -355,6 +433,28 @@
 			};
 			name = Release;
 		};
+		BACAAE57E90BAC429262CE3F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.1waters.VoClaudeTests;
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/VoClaude.app/VoClaude";
+				"TEST_HOST[sdk=macosx*]" = "$(BUILT_PRODUCTS_DIR)/VoClaude.app/Contents/MacOS/VoClaude";
+			};
+			name = Debug;
+		};
 		EAA55FBAEF45448CA4357CB4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -380,9 +480,40 @@
 			};
 			name = Debug;
 		};
+		F82304D15C234A5CB0703CC6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.1waters.VoClaudeTests;
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/VoClaude.app/VoClaude";
+				"TEST_HOST[sdk=macosx*]" = "$(BUILT_PRODUCTS_DIR)/VoClaude.app/Contents/MacOS/VoClaude";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		30CD57A3AD2CC8DE0418A6AC /* Build configuration list for PBXNativeTarget "VoClaudeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BACAAE57E90BAC429262CE3F /* Debug */,
+				F82304D15C234A5CB0703CC6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		639BF626EAEBDB36B14516E5 /* Build configuration list for PBXProject "VoClaude" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -112,12 +112,17 @@ final class AudioPlayer {
 }
 
 /// Shared AVAudioSession setup (iOS only; macOS has no audio session).
+@MainActor
 enum AudioSessionConfigurator {
-    @MainActor
+    /// While a call is active, CallKit owns the session (voice-chat mode, earpiece routing),
+    /// so push-to-talk defaults must not override it.
+    static var callActive = false
+
     static func activate() throws {
         #if os(iOS)
+        guard !callActive else { return }
         let session = AVAudioSession.sharedInstance()
-        if session.category != .playAndRecord {
+        if session.category != .playAndRecord || session.mode != .default {
             try session.setCategory(
                 .playAndRecord,
                 mode: .default,
@@ -125,6 +130,37 @@ enum AudioSessionConfigurator {
             )
         }
         try session.setActive(true)
+        #endif
+    }
+
+    /// Phone-call audio: echo cancellation, earpiece by default, Bluetooth headsets.
+    static func configureForCall() throws {
+        #if os(iOS)
+        callActive = true
+        try AVAudioSession.sharedInstance().setCategory(
+            .playAndRecord,
+            mode: .voiceChat,
+            options: [.allowBluetoothHFP]
+        )
+        #else
+        callActive = true
+        #endif
+    }
+
+    /// Without CallKit (macOS, Simulator) nobody activates the session for us.
+    static func activateWithoutCallKit() throws {
+        #if os(iOS)
+        try AVAudioSession.sharedInstance().setActive(true)
+        #endif
+    }
+
+    static func endCall() {
+        callActive = false
+    }
+
+    static func setSpeaker(_ on: Bool) {
+        #if os(iOS)
+        try? AVAudioSession.sharedInstance().overrideOutputAudioPort(on ? .speaker : .none)
         #endif
     }
 }

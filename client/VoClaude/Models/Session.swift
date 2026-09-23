@@ -21,8 +21,4 @@ struct Session: Identifiable, Codable, Hashable, Sendable {
         return components.url
     }
 
-    static let samples: [Session] = [
-        Session(name: "Repo A", host: "192.168.1.100:8000", repoAlias: "repo_a"),
-        Session(name: "Repo B", host: "192.168.1.100:8000", repoAlias: "repo_b"),
-    ]
 }

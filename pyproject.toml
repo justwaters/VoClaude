@@ -1,0 +1,51 @@
+[project]
+name = "voclaude"
+dynamic = ["version"]
+description = "Talk to headless Claude Code sessions from your phone: voice daemon for the VoClaude app"
+readme = "README.md"
+requires-python = ">=3.10,<3.13"  # kokoro doesn't support 3.13 yet
+license = "MIT"
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "pydantic",
+    "zeroconf>=0.132",
+]
+
+[project.optional-dependencies]
+# `voclaude serve` installs these on first run; listed here for manual installs.
+speech = [
+    "numpy",
+    "soundfile",
+    "torch",
+    "kokoro>=0.9.4",
+    "faster-whisper",
+]
+csm = [
+    "transformers>=4.52.1",
+    "torchaudio",
+    "accelerate",
+]
+
+[project.scripts]
+voclaude = "voclaude.cli:main"
+
+[dependency-groups]
+dev = ["pytest", "httpx", "numpy"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "daemon/voclaude/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = ["daemon/voclaude", "daemon/tests", "README.md"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["daemon/voclaude"]
+
+[tool.pytest.ini_options]
+testpaths = ["daemon/tests"]
+pythonpath = ["daemon"]

@@ -110,12 +110,33 @@ class SessionManager:
         self._permission_mode: str | None = claude_cfg.get("permission_mode")
         self._extra_args: list[str] = claude_cfg.get("extra_args", [])
 
-        saved = state.get("sessions", {})
         self.repos: dict[str, Repo] = {}
+        self._locks: dict[str, asyncio.Lock] = {}
+        self._started = False
+        self.sync(repos_cfg)
+        self._started = True
+
+    def sync(self, repos_cfg: dict) -> None:
+        """Match the watched repos to config, keeping running turns and known sessions."""
+        saved = self._state.get("sessions", {})
+        for alias in list(self.repos):
+            if alias not in repos_cfg and not self._locks[alias].locked():
+                del self.repos[alias]
+                del self._locks[alias]
+                log.info("Stopped watching %s", alias)
         for alias, rc in repos_cfg.items():
             path = Path(rc["path"]).expanduser().resolve()
             if not path.is_dir():
                 log.warning("Repo %s path does not exist: %s", alias, path)
+            existing = self.repos.get(alias)
+            if existing:
+                # Update in place: a running turn holds this object and records its session ID on it.
+                existing.path = path
+                existing.display_name = rc.get("display_name", alias)
+                existing.extra_args = rc.get("extra_args", [])
+                if rc.get("session_id"):
+                    existing.session_id = rc["session_id"]
+                continue
             # An explicit session_id in config.json wins over one discovered at runtime.
             self.repos[alias] = Repo(
                 alias=alias,
@@ -124,7 +145,9 @@ class SessionManager:
                 session_id=rc.get("session_id") or saved.get(alias),
                 extra_args=rc.get("extra_args", []),
             )
-        self._locks = {alias: asyncio.Lock() for alias in self.repos}
+            self._locks[alias] = asyncio.Lock()
+            if self._started:
+                log.info("Watching %s → %s", alias, path)
 
     def get(self, alias: str) -> Repo:
         try:

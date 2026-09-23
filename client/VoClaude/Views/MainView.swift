@@ -3,14 +3,18 @@ import SwiftUI
 struct MainView: View {
     @Environment(SessionStore.self) private var store
     @Environment(WebSocketManager.self) private var connections
+    @Environment(DaemonBrowser.self) private var browser
 
     @State private var editor: EditorTarget?
+    @State private var pairing: DiscoveredDaemon?
     @AppStorage("onDeviceTranscription") private var onDeviceTranscription = false
 
     var body: some View {
         @Bindable var store = store
         NavigationSplitView {
             List(selection: $store.selectedID) {
+                if !store.sessions.isEmpty {
+                Section("Sessions") {
                 ForEach(store.sessions) { session in
                     SessionRow(session: session, connection: connections.connections[session.id])
                         .tag(session.id)
@@ -21,6 +25,34 @@ struct MainView: View {
                 }
                 .onMove(perform: store.move)
                 .onDelete { offsets in delete(offsets.map { store.sessions[$0].id }) }
+                }
+                }
+
+                Section {
+                    ForEach(browser.daemons) { daemon in
+                        Button {
+                            pairing = daemon
+                        } label: {
+                            Label {
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(daemon.displayName)
+                                    Text(daemon.host).font(.caption).foregroundStyle(.secondary)
+                                }
+                            } icon: {
+                                Image(systemName: "desktopcomputer")
+                            }
+                        }
+                        .buttonStyle(.plain)
+                    }
+                } header: {
+                    Text("Nearby")
+                } footer: {
+                    if let error = browser.error {
+                        Text(error)
+                    } else if browser.daemons.isEmpty {
+                        Text("Run `voclaude serve` on a computer on this network.")
+                    }
+                }
             }
             .navigationTitle("VoClaude")
             #if os(macOS)
@@ -37,11 +69,11 @@ struct MainView: View {
                 }
             }
             .overlay {
-                if store.sessions.isEmpty {
+                if store.sessions.isEmpty && browser.daemons.isEmpty {
                     ContentUnavailableView {
                         Label("No Sessions", systemImage: "waveform")
                     } description: {
-                        Text("Add a daemon host and repo alias to start talking to Claude.")
+                        Text("Run `voclaude serve` on your computer and it shows up here, or add a host by hand.")
                     } actions: {
                         Button("Add Session") { editor = .new }
                     }
@@ -54,6 +86,9 @@ struct MainView: View {
             } else {
                 ContentUnavailableView("Select a Session", systemImage: "sidebar.left")
             }
+        }
+        .sheet(item: $pairing) { daemon in
+            DaemonConnectView(daemon: daemon)
         }
         .sheet(item: $editor) { target in
             switch target {
@@ -132,4 +167,5 @@ private struct SessionRow: View {
         .environment(SessionStore())
         .environment(AudioRecorder())
         .environment(WebSocketManager(player: AudioPlayer()))
+        .environment(DaemonBrowser())
 }

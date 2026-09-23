@@ -18,7 +18,7 @@ final class SessionStore {
            let saved = try? JSONDecoder().decode([Session].self, from: data) {
             sessions = saved
         } else {
-            sessions = Session.samples
+            sessions = []  // discovered daemons appear under Nearby
         }
         selectedID = sessions.first?.id
     }

@@ -1,61 +1,111 @@
 # VoClaude
 
-Talk to headless Claude Code sessions on a remote machine from an iOS or macOS app.
+Talk to Claude Code on your computer from your iPhone, or call it like a phone.
 
 ```
-VoClaude app ──ws://host:8000/ws/session/<repo>──▶ voclaude-daemon ──stdin/stream-json──▶ claude -p
-   push-to-talk mic  ─ pcm16 16 kHz ─▶  faster-whisper
-   gapless player   ◀─ pcm16 24 kHz ──  Kokoro-82M (default) or sesame/csm-1b
+iPhone / Mac app ──Bonjour discovery──▶ voclaude serve ──stdin/stream-json──▶ claude -p   (in each watched repo)
+   mic (push-to-talk or hands-free call) ─ pcm16 16 kHz ─▶ faster-whisper
+   speaker                              ◀─ pcm16 24 kHz ── Kokoro-82M (default) or sesame/csm-1b
 ```
 
-## Daemon (`daemon/`)
+## Install the daemon (macOS or Linux)
 
-Requirements: Python 3.11+ and the `claude` CLI logged in on the host.
+You need [uv](https://docs.astral.sh/uv/) and the [Claude Code](https://docs.claude.com/en/docs/claude-code) CLI,
+logged in (run `claude` once).
 
-1. Edit `daemon/config.json` so each repo alias points at its path.
-2. Run `daemon/run_daemon.sh`. The first run creates `.venv` and installs the dependencies.
-3. Copy the **auth token** from the startup log. The daemon runs `Bash` in your repos, so it always
-   requires a token. If none is set in config.json or `VOCLAUDE_TOKEN`, one is generated and saved
-   to `daemon/state.json`.
+```bash
+uv tool install "git+https://github.com/justwaters/VoClaude@v0.1.0"
+```
 
-### Speech engines
+uv picks a compatible Python (3.10–3.12) on its own.
 
-`tts.engine` in config.json picks the engine:
+## Use it
 
-- **`kokoro`** (default): Kokoro-82M runs on a plain CPU on macOS or Linux, about 7× faster than
-  real time on an M2 Pro. The voices come from `tts.kokoro.voices`: `af_heart` (Heart, American female,
-  the default), `bf_emma` (Emma, British female), `am_puck` (Puck, American male) and `bm_george`
-  (George, British male). Pick one per session from the app's **Session → Voice** menu. You can list
-  any other Kokoro voice ID in config.json too.
-- **`csm`**: Sesame's `sesame/csm-1b` is richer but needs a CUDA GPU; on Apple Silicon it runs 4–10×
-  slower than real time. The model is gated: request access, then run `hf auth login`. The open weights
-  don't include Sesame's Maya voice. Set `tts.csm.voice_prompt` to a short WAV clip and its exact
-  transcript for a specific voice.
+```bash
+cd ~/code/my-app
+voclaude watch          # add this repo; run it in each repo you want to talk to
+voclaude serve          # start the daemon
+```
 
-To check speech on its own, run `.venv/bin/python test_tts.py` (Kokoro, every configured voice) or
-`.venv/bin/python test_csm.py` from `daemon/`. Both write WAV files and print the real-time factor.
+- **First `serve`:** it installs the speech engine (PyTorch, Kokoro, faster-whisper; a few GB) and
+  downloads the voices. Later starts take about 10 seconds.
+- **The token:** `serve` prints an **auth token**, and `voclaude token` prints it again at any time.
+  The daemon lets Claude run `Bash` in your repos, so every connection needs it.
+- **Discovery:** the daemon announces itself on your network over Bonjour, so the app finds it without
+  an IP address.
+- **No restart needed:** repos you `watch` while `serve` is running show up right away.
 
-Notes:
-- **Sessions.** Session IDs the daemon discovers are saved to `state.json`. A `session_id` set in
-  config.json takes precedence. "New Claude Conversation" in the app clears the saved ID.
-- **What's spoken.** Only Claude's prose is read aloud; code blocks are skipped.
-- **Permissions.** Claude runs with `--allowedTools Read,Edit,Bash`. Use `claude.permission_mode` and
-  `extra_args` in config.json to change that.
+Other commands:
 
-The WebSocket protocol is documented at the top of `daemon/main.py`.
+| Command | What it does |
+|---|---|
+| `voclaude list` | Show watched repos |
+| `voclaude unwatch [alias]` | Stop watching the current repo (or the named one) |
+| `voclaude token` | Print the token the app needs |
+| `voclaude say "Hello" --voice bf_emma` | Speak a test sentence to `voclaude-say.wav` |
+| `voclaude serve --port 9000` | Use another port (default 8000) |
 
-## App (`client/`)
+Settings live in `~/.config/voclaude/config.json`; set `VOCLAUDE_HOME` to move them. To upgrade, run
+`uv tool upgrade voclaude`; the next `serve` reinstalls the speech engine if the upgrade removed it.
 
-`client/project.yml` defines the Xcode project (XcodeGen). After changing it, run `cd client && xcodegen generate`.
+## Install the app (iPhone or Mac)
 
-1. Open `client/VoClaude.xcodeproj`, set your development team, and run on iOS 17+ or macOS 14+.
-2. Add a session with the daemon host (`192.168.1.100:8000`), the repo alias (`repo_a`) and the token.
-   The token is stored in the Keychain.
-3. Hold the mic button to talk and release to send. **Stop** cancels the running turn.
+1. Open `client/VoClaude.xcodeproj` in Xcode, select the **VoClaude** target, and pick your **Team**
+   under **Signing & Capabilities**.
+2. Pick a device and press ⌘R.
+   - **iPhone:** turn on Developer Mode (Settings → Privacy & Security) and trust your developer
+     profile when asked.
+   - **Free Apple ID:** the iPhone build expires after 7 days.
+3. On first launch, allow **Local Network** access. Your computer then appears under **Nearby**.
+4. Tap your computer, paste the token, and choose the repos to add.
 
-Each session keeps its own WebSocket open, so switching repos doesn't interrupt work in the other one.
-Only the selected session plays audio. **Settings → Transcribe on device** uses Apple Speech
-instead of uploading audio to faster-whisper.
+The project is generated from `client/project.yml` with [XcodeGen](https://github.com/yonaskolb/XcodeGen).
+After editing that file, run `cd client && xcodegen generate`.
 
-The app uses plain `ws://` (ATS arbitrary loads are enabled) because it's meant for a LAN or Tailscale.
-Put the daemon behind TLS before exposing it anywhere else.
+### Talking to Claude
+
+- **Hold the mic button** to talk, then release to send. Claude's reply appears as text and is read aloud.
+- **Tap the green phone button** to start a hands-free call. On iPhone it's a real call: it shows in the
+  Dynamic Island and on the lock screen, keeps going with the screen off or in another app, uses the
+  earpiece or your AirPods, and appears in Recents.
+  - **Taking turns:** talk normally and pause when you're done. VoClaude sends what you said, waits for
+    Claude, reads the answer, then listens again.
+  - **In-call controls:** mute, speaker, **Stop** (cancel Claude's current turn), and end call.
+- **Session → Voice** picks the voice for each repo: Heart, Emma, Puck, or George.
+- **Stop** cancels a running turn.
+- **Switching repos** doesn't interrupt work in the other one; only the selected repo speaks.
+
+You can also add a daemon by hand with **+**: enter a host like `192.168.1.5:8000` or a Tailscale IP.
+
+## Speech engines
+
+`tts.engine` in the config picks the engine:
+
+- **`kokoro`** (default): Kokoro-82M runs on a plain CPU, about 7× faster than real time on an M2 Pro.
+  - **Voices:** `af_heart` (American female, the default), `bf_emma` (British female), `am_puck`
+    (American male) and `bm_george` (British male).
+  - **More voices:** add any other [Kokoro voice](https://huggingface.co/hexgrad/Kokoro-82M/blob/main/VOICES.md)
+    to `tts.kokoro.voices`.
+- **`csm`**: Sesame's `sesame/csm-1b` needs a CUDA GPU; on Apple Silicon it's 4–10× slower than real time.
+  - **Access:** the model is gated. Request access on Hugging Face, then run `hf auth login`.
+  - **Voice:** the open weights don't include Sesame's Maya voice. Set `tts.csm.voice_prompt` to a short
+    WAV clip and its exact transcript for a specific voice.
+
+Only Claude's prose is read aloud; code blocks are skipped.
+
+## Notes
+
+- **Sessions.** Each repo keeps one Claude conversation, resumed across turns and restarts.
+  **Session → New Claude Conversation** in the app starts a fresh one.
+- **Permissions.** Claude runs with `--allowedTools Read,Edit,Bash`. Change this with `claude.allowed_tools`,
+  `claude.permission_mode` and `claude.extra_args` in the config.
+- **Network.** The app connects over plain `ws://` on your LAN or Tailscale. Put the daemon behind TLS
+  before exposing it anywhere else.
+- **Protocol.** The WebSocket protocol is documented at the top of `daemon/voclaude/server.py`.
+
+## Development
+
+```bash
+uv run --group dev pytest            # daemon tests (uses a fake claude CLI)
+cd client && xcodebuild test -scheme VoClaude -destination 'platform=macOS'   # app tests
+```

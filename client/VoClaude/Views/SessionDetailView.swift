@@ -7,6 +7,7 @@ struct SessionDetailView: View {
     @Environment(SessionStore.self) private var store
     @Environment(WebSocketManager.self) private var connections
     @Environment(AudioRecorder.self) private var recorder
+    @Environment(CallController.self) private var call
     @AppStorage("onDeviceTranscription") private var onDeviceTranscription = false
 
     @State private var draft = ""
@@ -29,6 +30,11 @@ struct SessionDetailView: View {
         .task(id: session) {
             connections.activate(session, token: store.token(for: session.host))
         }
+        #if os(iOS)
+        .fullScreenCover(isPresented: isOnCall) { CallView() }
+        #else
+        .sheet(isPresented: isOnCall) { CallView() }
+        #endif
         .alert("Microphone", isPresented: .constant(recorderError != nil)) {
             Button("OK") { recorderError = nil }
         } message: {
@@ -65,7 +71,11 @@ struct SessionDetailView: View {
                         .keyboardShortcut(.return, modifiers: .command)
                 }
             }
-            pushToTalkButton
+            HStack(spacing: 32) {
+                Color.clear.frame(width: 56, height: 56)
+                pushToTalkButton
+                callButton
+            }
         }
         .padding()
         .background(.bar)
@@ -112,7 +122,7 @@ struct SessionDetailView: View {
         .gesture(
             DragGesture(minimumDistance: 0)
                 .onChanged { _ in
-                    guard !isPressing, canSend else { return }
+                    guard !isPressing, canSend, !call.isActive else { return }
                     isPressing = true
                     startRecording()
                 }
@@ -126,6 +136,31 @@ struct SessionDetailView: View {
         .accessibilityLabel(recording ? "Recording. Release to send." : "Hold to talk")
         .accessibilityAddTraits(.isButton)
         .accessibilityAction { recording ? stopRecording() : startRecording() }
+    }
+
+    private var callButton: some View {
+        Button {
+            Task { await call.start(session) }
+        } label: {
+            Image(systemName: "phone.fill")
+                .font(.system(size: 22, weight: .semibold))
+                .foregroundStyle(.white)
+                .frame(width: 56, height: 56)
+                .background(Color.green, in: .circle)
+        }
+        .buttonStyle(.plain)
+        .disabled(!canSend || call.isActive)
+        .opacity(canSend && !call.isActive ? 1 : 0.4)
+        .accessibilityLabel("Call \(session.name)")
+        .help("Hands-free call: talk naturally, Claude answers out loud")
+    }
+
+    private var isOnCall: Binding<Bool> {
+        Binding {
+            call.isActive && call.session?.id == session.id
+        } set: { presented in
+            if !presented && call.isActive { call.hangUp() }
+        }
     }
 
     @ToolbarContentBuilder
@@ -167,6 +202,7 @@ struct SessionDetailView: View {
 
     private var statusText: String {
         if recorder.isRecording { return "Listening…" }
+        if let error = call.error, !call.isActive { return "Call ended: \(error)" }
         switch connection?.state {
         case .connecting, nil: return "Connecting…"
         case .disconnected: return "Disconnected"
