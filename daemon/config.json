@@ -1,0 +1,60 @@
+{
+  "host": "0.0.0.0",
+  "port": 8000,
+  "auth_token": "",
+
+  "claude": {
+    "bin": "claude",
+    "allowed_tools": ["Read", "Edit", "Bash"],
+    "permission_mode": null,
+    "extra_args": []
+  },
+
+  "repos": {
+    "repo_a": {
+      "display_name": "Repo A",
+      "path": "~/code/repo_a",
+      "session_id": null
+    },
+    "repo_b": {
+      "display_name": "Repo B",
+      "path": "~/code/repo_b",
+      "session_id": null
+    }
+  },
+
+  "tts": {
+    "enabled": true,
+    "engine": "kokoro",
+    "preload": true,
+
+    "kokoro": {
+      "voice": "af_heart",
+      "voices": ["af_heart", "bf_emma", "am_puck", "bm_george"],
+      "speed": 1.0,
+      "device": "cpu"
+    },
+
+    "csm": {
+      "model_id": "sesame/csm-1b",
+      "device": "auto",
+      "dtype": "auto",
+      "speaker_id": 0,
+      "seed": 42,
+      "voice_prompt": {
+        "audio_path": null,
+        "text": null
+      },
+      "max_audio_seconds": 20
+    }
+  },
+
+  "stt": {
+    "enabled": true,
+    "model": "base.en",
+    "device": "auto",
+    "compute_type": "default",
+    "language": "en",
+    "preload": false
+  }
+}

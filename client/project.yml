@@ -1,0 +1,55 @@
+# Generate VoClaude.xcodeproj with:  xcodegen generate
+name: VoClaude
+options:
+  bundleIdPrefix: com.1waters
+  deploymentTarget:
+    iOS: "17.0"
+    macOS: "14.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    CODE_SIGN_STYLE: Automatic
+    DEVELOPMENT_TEAM: ""
+targets:
+  VoClaude:
+    type: application
+    supportedDestinations: [iOS, macOS]
+    sources:
+      - VoClaude
+    info:
+      path: Config/Info.plist
+      properties:
+        CFBundleDisplayName: VoClaude
+        NSMicrophoneUsageDescription: VoClaude records your voice while you hold the talk button so Claude can hear your request.
+        NSSpeechRecognitionUsageDescription: VoClaude can transcribe your voice on this device before sending it to your daemon.
+        NSLocalNetworkUsageDescription: VoClaude connects to the voclaude-daemon running on your local network.
+        # Daemons are reached over plain ws:// on LAN / Tailscale IPs.
+        NSAppTransportSecurity:
+          NSAllowsArbitraryLoads: true
+          NSAllowsLocalNetworking: true
+        UILaunchScreen: {}
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: true
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        LSApplicationCategoryType: public.app-category.developer-tools
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.1waters.VoClaude
+        PRODUCT_NAME: VoClaude
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        TARGETED_DEVICE_FAMILY: "1,2"
+        ENABLE_PREVIEWS: YES
+        "CODE_SIGN_ENTITLEMENTS[sdk=macosx*]": Config/VoClaude-macOS.entitlements
+        ENABLE_HARDENED_RUNTIME: YES

@@ -1,0 +1,407 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		051EC64B9EEB8D1B3010D5C0 /* VoClaudeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 597C682A3FA2CEBEC4029013 /* VoClaudeApp.swift */; };
+		3DA299EB0AF43BE999B5761F /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF0A24F87D99323B7FED2121 /* AudioPlayer.swift */; };
+		52C60CA1F58D90AB71106C52 /* SessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2375EDE05A97368C52314C4A /* SessionStore.swift */; };
+		7A4B0538FBD5A9C2BAA53A10 /* WebSocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FF5EAFC5179D2047FDAD37F /* WebSocketManager.swift */; };
+		7BDAC3DF5FB73F679DEA2C25 /* SessionEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AACCED17826675DFA49DB2 /* SessionEditorView.swift */; };
+		A12E94661C0E43946F6D9A7D /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587E1D53CC4A92937FF7D930 /* Message.swift */; };
+		C9FB13C57171C34A786ED286 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8958C1DA3B9293178CF9DB6 /* MainView.swift */; };
+		CA49B10ACF1B6582710D2C60 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8CAA226FB34A1E471C394E99 /* Assets.xcassets */; };
+		D9CCFAE7EFAFF2B3E19D38C2 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29C526E6FA63CDFD3E1F474B /* Session.swift */; };
+		F5416FB25792866AB64D7894 /* AudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04740B60D63F681869C49A35 /* AudioRecorder.swift */; };
+		FAC9BF7117D88A52E9624A5B /* AudioVisualizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181A4770BAA6A25EEF2C2687 /* AudioVisualizerView.swift */; };
+		FCCD6855BD45C30DBA8E7B0C /* SessionDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0CFCD7B7C8C72D1870F8583 /* SessionDetailView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		04740B60D63F681869C49A35 /* AudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorder.swift; sourceTree = "<group>"; };
+		181A4770BAA6A25EEF2C2687 /* AudioVisualizerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioVisualizerView.swift; sourceTree = "<group>"; };
+		2375EDE05A97368C52314C4A /* SessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStore.swift; sourceTree = "<group>"; };
+		23AACCED17826675DFA49DB2 /* SessionEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionEditorView.swift; sourceTree = "<group>"; };
+		29C526E6FA63CDFD3E1F474B /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
+		4FF5EAFC5179D2047FDAD37F /* WebSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketManager.swift; sourceTree = "<group>"; };
+		587E1D53CC4A92937FF7D930 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		597C682A3FA2CEBEC4029013 /* VoClaudeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoClaudeApp.swift; sourceTree = "<group>"; };
+		6569501362FDD2E6F9BD8B67 /* VoClaude.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = VoClaude.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		8CAA226FB34A1E471C394E99 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C8958C1DA3B9293178CF9DB6 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		DF0A24F87D99323B7FED2121 /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
+		E0CFCD7B7C8C72D1870F8583 /* SessionDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionDetailView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		13ACFBEA8F49ACB1E43E2BC3 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				8CAA226FB34A1E471C394E99 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		4F7AE4F4491D5EF7631A852C /* VoClaude */ = {
+			isa = PBXGroup;
+			children = (
+				52BF96685E35AB731DAF9FAD /* App */,
+				B45619F71E32B7C336CDD0B8 /* Models */,
+				13ACFBEA8F49ACB1E43E2BC3 /* Resources */,
+				E44A7C93E7E2BDC4164C0AF0 /* Services */,
+				6F9A72C484C00782EBC31A4D /* Views */,
+			);
+			path = VoClaude;
+			sourceTree = "<group>";
+		};
+		52BF96685E35AB731DAF9FAD /* App */ = {
+			isa = PBXGroup;
+			children = (
+				597C682A3FA2CEBEC4029013 /* VoClaudeApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		5C2B37BB9668C334007B9509 = {
+			isa = PBXGroup;
+			children = (
+				4F7AE4F4491D5EF7631A852C /* VoClaude */,
+				73F7A96E41BB75CD7766C7E4 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6F9A72C484C00782EBC31A4D /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				181A4770BAA6A25EEF2C2687 /* AudioVisualizerView.swift */,
+				C8958C1DA3B9293178CF9DB6 /* MainView.swift */,
+				E0CFCD7B7C8C72D1870F8583 /* SessionDetailView.swift */,
+				23AACCED17826675DFA49DB2 /* SessionEditorView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		73F7A96E41BB75CD7766C7E4 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6569501362FDD2E6F9BD8B67 /* VoClaude.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B45619F71E32B7C336CDD0B8 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				587E1D53CC4A92937FF7D930 /* Message.swift */,
+				29C526E6FA63CDFD3E1F474B /* Session.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E44A7C93E7E2BDC4164C0AF0 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				DF0A24F87D99323B7FED2121 /* AudioPlayer.swift */,
+				04740B60D63F681869C49A35 /* AudioRecorder.swift */,
+				2375EDE05A97368C52314C4A /* SessionStore.swift */,
+				4FF5EAFC5179D2047FDAD37F /* WebSocketManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0391EFFEE603E65F64423A2C /* VoClaude */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DDF3123AB1B7D5C7360A5B75 /* Build configuration list for PBXNativeTarget "VoClaude" */;
+			buildPhases = (
+				003322A9901448A34C69CB5C /* Sources */,
+				3BE55D900E22AD8420D4BE49 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VoClaude;
+			packageProductDependencies = (
+			);
+			productName = VoClaude;
+			productReference = 6569501362FDD2E6F9BD8B67 /* VoClaude.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CDFAB29A9C3FEB49227DA4B3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					0391EFFEE603E65F64423A2C = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 639BF626EAEBDB36B14516E5 /* Build configuration list for PBXProject "VoClaude" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 5C2B37BB9668C334007B9509;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 73F7A96E41BB75CD7766C7E4 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0391EFFEE603E65F64423A2C /* VoClaude */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3BE55D900E22AD8420D4BE49 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CA49B10ACF1B6582710D2C60 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		003322A9901448A34C69CB5C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3DA299EB0AF43BE999B5761F /* AudioPlayer.swift in Sources */,
+				F5416FB25792866AB64D7894 /* AudioRecorder.swift in Sources */,
+				FAC9BF7117D88A52E9624A5B /* AudioVisualizerView.swift in Sources */,
+				C9FB13C57171C34A786ED286 /* MainView.swift in Sources */,
+				A12E94661C0E43946F6D9A7D /* Message.swift in Sources */,
+				D9CCFAE7EFAFF2B3E19D38C2 /* Session.swift in Sources */,
+				FCCD6855BD45C30DBA8E7B0C /* SessionDetailView.swift in Sources */,
+				7BDAC3DF5FB73F679DEA2C25 /* SessionEditorView.swift in Sources */,
+				52C60CA1F58D90AB71106C52 /* SessionStore.swift in Sources */,
+				051EC64B9EEB8D1B3010D5C0 /* VoClaudeApp.swift in Sources */,
+				7A4B0538FBD5A9C2BAA53A10 /* WebSocketManager.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		7AD0C0795AF6AECD656BA5CE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		84E9D67ECC30A1AD6CA0A2C1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		A09F0F71A0762FFA08046A23 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = "Config/VoClaude-macOS.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = Config/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.1waters.VoClaude;
+				PRODUCT_NAME = VoClaude;
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		EAA55FBAEF45448CA4357CB4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = "Config/VoClaude-macOS.entitlements";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = Config/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.1waters.VoClaude;
+				PRODUCT_NAME = VoClaude;
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		639BF626EAEBDB36B14516E5 /* Build configuration list for PBXProject "VoClaude" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7AD0C0795AF6AECD656BA5CE /* Debug */,
+				84E9D67ECC30A1AD6CA0A2C1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		DDF3123AB1B7D5C7360A5B75 /* Build configuration list for PBXNativeTarget "VoClaude" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EAA55FBAEF45448CA4357CB4 /* Debug */,
+				A09F0F71A0762FFA08046A23 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CDFAB29A9C3FEB49227DA4B3 /* Project object */;
+}

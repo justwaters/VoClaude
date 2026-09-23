@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+daemon/.venv/
+daemon/state.json
+daemon/state.tmp
+daemon/test_csm_output.wav
+
+# Xcode
+client/build/
+DerivedData/
+xcuserdata/
+*.xcuserstate
+
+.DS_Store
+daemon/test_tts_*.wav
