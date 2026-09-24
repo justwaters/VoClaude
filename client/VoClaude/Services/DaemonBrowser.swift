@@ -85,22 +85,43 @@ enum DaemonAPI {
         case badHost
         case unauthorized
         case http(Int)
+        case unreachable(String)
 
         var errorDescription: String? {
             switch self {
             case .badHost: "Invalid daemon address."
             case .unauthorized: "Wrong token. Run `voclaude token` on the daemon's machine."
             case .http(let code): "The daemon returned HTTP \(code)."
+            case .unreachable(let host): unreachableMessage(host)
             }
         }
+    }
+
+    /// iOS reports blocked or unroutable local connections as "offline" or "timed out".
+    /// Say what actually needs checking.
+    static func unreachableMessage(_ host: String) -> String {
+        "Can't reach \(host). Make sure this device is on the same Wi-Fi as the computer, "
+            + "`voclaude serve` is running, and Local Network access is on "
+            + "(Settings → Privacy & Security → Local Network → VoClaude)."
+    }
+
+    static func isUnreachable(_ error: Error) -> Bool {
+        guard let error = error as? URLError else { return false }
+        return [.notConnectedToInternet, .timedOut, .cannotConnectToHost, .cannotFindHost,
+                .networkConnectionLost, .dnsLookupFailed].contains(error.code)
     }
 
     /// Repos the daemon watches (`voclaude watch`).
     static func repos(host: String, token: String) async throws -> [RemoteRepo] {
         guard let url = URL(string: "http://\(host)/sessions") else { throw APIError.badHost }
-        var request = URLRequest(url: url, timeoutInterval: 8)
+        var request = URLRequest(url: url, timeoutInterval: 15)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        let (data, response) = try await URLSession.shared.data(for: request)
+        let data: Data, response: URLResponse
+        do {
+            (data, response) = try await URLSession.shared.data(for: request)
+        } catch where isUnreachable(error) {
+            throw APIError.unreachable(host)
+        }
         switch (response as? HTTPURLResponse)?.statusCode ?? 0 {
         case 200: break
         case 401: throw APIError.unauthorized

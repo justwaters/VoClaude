@@ -17,17 +17,28 @@ log = logging.getLogger("voclaude.discovery")
 
 SERVICE_TYPE = "_voclaude._tcp.local."
 
+# Tailscale and carrier-grade NAT. Phones on the LAN can't reach these, and advertising them
+# makes the app hang connecting to an unreachable address.
+CGNAT = ipaddress.IPv4Network("100.64.0.0/10")
+# VPN, container and virtual-machine interfaces: not reachable from the local network.
+VIRTUAL_PREFIXES = ("utun", "tun", "tap", "tailscale", "wg", "zt", "docker", "br-", "veth",
+                    "virbr", "vmnet", "vboxnet", "bridge", "llw", "awdl", "ipsec", "ppp")
+
 
 def local_ipv4_addresses() -> list[str]:
-    """Non-loopback IPv4 addresses, LAN addresses first."""
+    """IPv4 addresses a device on the same LAN can reach."""
     found: list[ipaddress.IPv4Address] = []
     for adapter in ifaddr.get_adapters():
+        name = (adapter.nice_name or adapter.name or "").lower()
+        if name.startswith(VIRTUAL_PREFIXES):
+            continue
         for ip in adapter.ips:
             if isinstance(ip.ip, str):
                 addr = ipaddress.IPv4Address(ip.ip)
-                if not (addr.is_loopback or addr.is_link_local) and addr not in found:
-                    found.append(addr)
-    # Private LAN ranges before CGNAT/Tailscale (100.64/10) and anything public.
+                if addr.is_loopback or addr.is_link_local or addr in CGNAT or addr in found:
+                    continue
+                found.append(addr)
+    # Private LAN ranges before anything public.
     found.sort(key=lambda a: (not a.is_private, str(a)))
     return [str(a) for a in found]
 

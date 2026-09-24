@@ -168,10 +168,12 @@ final class SessionConnection {
         self.task = nil
         activity = .idle
         closeTurn()
-        state = .failed(Self.describe(closeCode: task.closeCode, reason: task.closeReason, error: error))
+        state = .failed(Self.describe(closeCode: task.closeCode, reason: task.closeReason, error: error, host: session.host))
     }
 
-    private static func describe(closeCode: URLSessionWebSocketTask.CloseCode, reason: Data?, error: Error) -> String {
+    private static func describe(
+        closeCode: URLSessionWebSocketTask.CloseCode, reason: Data?, error: Error, host: String
+    ) -> String {
         if let reason, let text = String(data: reason, encoding: .utf8), !text.isEmpty {
             return text
         }
@@ -179,6 +181,7 @@ final class SessionConnection {
         case 1008: return "Invalid token"
         case 4404: return "Unknown repo alias"
         default:
+            if DaemonAPI.isUnreachable(error) { return DaemonAPI.unreachableMessage(host) }
             let message = (error as NSError).localizedDescription
             // A handshake rejected with HTTP 403 surfaces as a generic "bad server response".
             return message.contains("bad server response") ? "Connection rejected (check the token)" : message
