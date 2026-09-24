@@ -4,10 +4,13 @@ import Observation
 
 /// A voclaude daemon found on the local network via Bonjour (`_voclaude._tcp`).
 struct DiscoveredDaemon: Identifiable, Hashable, Sendable {
-    /// Bonjour instance name, e.g. "VoClaude on JDs-MacBook-Pro".
+    /// Bonjour instance name, e.g. "VoClaude on JDs-MacBook-Pro". Stable across IP changes.
     let id: String
-    /// `voclaude-jds-macbook-pro.local:8000`
+    /// LAN address to connect to, e.g. `10.240.12.120:8000`. iOS doesn't reliably resolve the
+    /// daemon's `.local` name for plain connections, so the app always connects by IP.
     let host: String
+    /// `voclaude-jds-macbook-pro.local:8000`, used to migrate sessions paired by name in v0.1.0–0.1.1.
+    let mdnsHost: String?
     let version: String?
 
     var displayName: String {
@@ -65,11 +68,17 @@ final class DaemonBrowser {
             txt = record.dictionary
         }
         let port = txt["port"] ?? "8000"
-        // Prefer the daemon's own mDNS name: it survives DHCP address changes.
-        guard let host = txt["host"] ?? txt["ips"]?.split(separator: ",").first.map(String.init) else {
+        // The daemon lists LAN addresses first. Sessions remember the daemon by `id` and are
+        // re-pointed when its address changes (see SessionStore.refreshHosts).
+        guard let ip = txt["ips"]?.split(separator: ",").first.map(String.init) ?? txt["host"] else {
             return nil
         }
-        return DiscoveredDaemon(id: name, host: "\(host):\(port)", version: txt["version"])
+        return DiscoveredDaemon(
+            id: name,
+            host: "\(ip):\(port)",
+            mdnsHost: txt["host"].map { "\($0):\(port)" },
+            version: txt["version"]
+        )
     }
 
     private nonisolated static func describe(_ error: NWError) -> String {

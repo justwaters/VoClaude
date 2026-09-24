@@ -28,7 +28,7 @@ struct SessionDetailView: View {
         #endif
         .toolbar { toolbar }
         .task(id: session) {
-            connections.activate(session, token: store.token(for: session.host))
+            connections.activate(session, token: store.token(for: session.tokenKey))
         }
         #if os(iOS)
         .fullScreenCover(isPresented: isOnCall) { CallView() }
@@ -95,7 +95,7 @@ struct SessionDetailView: View {
             Spacer()
             if case .failed = connection?.state {
                 Button("Reconnect") {
-                    connection?.connect(token: store.token(for: session.host))
+                    connection?.connect(token: store.token(for: session.tokenKey))
                 }
                 .buttonStyle(.bordered)
                 .controlSize(.small)

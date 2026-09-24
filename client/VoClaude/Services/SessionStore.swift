@@ -50,6 +50,26 @@ final class SessionStore {
         save()
     }
 
+    /// Point sessions at the current address of daemons seen on the network.
+    func refreshHosts(from daemons: [DiscoveredDaemon]) {
+        var changed = false
+        for index in sessions.indices {
+            let session = sessions[index]
+            guard let daemon = daemons.first(where: {
+                $0.id == session.daemonID || (session.daemonID == nil && $0.mdnsHost == session.host)
+            }) else { continue }
+            if session.daemonID == nil, let legacy = token(for: session.host) {
+                setToken(legacy, for: daemon.id)  // token was saved under the .local host
+            }
+            if session.host != daemon.host || session.daemonID != daemon.id {
+                sessions[index].host = daemon.host
+                sessions[index].daemonID = daemon.id
+                changed = true
+            }
+        }
+        if changed { save() }
+    }
+
     private func save() {
         do {
             defaults.set(try JSONEncoder().encode(sessions), forKey: Self.sessionsKey)

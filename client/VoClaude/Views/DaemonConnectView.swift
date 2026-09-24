@@ -73,7 +73,7 @@ struct DaemonConnectView: View {
                 }
             }
             .task {
-                if let saved = store.token(for: daemon.host) {
+                if let saved = store.token(for: daemon.id) {
                     token = saved
                     await load()
                 }
@@ -85,7 +85,9 @@ struct DaemonConnectView: View {
     }
 
     private func isAdded(_ repo: RemoteRepo) -> Bool {
-        store.sessions.contains { $0.host == daemon.host && $0.repoAlias == repo.alias }
+        store.sessions.contains {
+            ($0.daemonID == daemon.id || $0.host == daemon.host) && $0.repoAlias == repo.alias
+        }
     }
 
     private func binding(for repo: RemoteRepo) -> Binding<Bool> {
@@ -105,7 +107,7 @@ struct DaemonConnectView: View {
             repos = try await DaemonAPI.repos(host: daemon.host, token: token)
             selected = Set(repos.filter { !isAdded($0) }.map(\.id))
             error = repos.isEmpty ? "No repos watched yet. Run `voclaude watch` inside a repo." : nil
-            store.setToken(token, for: daemon.host)
+            store.setToken(token, for: daemon.id)
         } catch {
             self.error = error.localizedDescription
         }
@@ -114,7 +116,9 @@ struct DaemonConnectView: View {
     private func add() {
         var firstAdded: Session.ID?
         for repo in repos where selected.contains(repo.id) && !isAdded(repo) {
-            let session = Session(name: repo.displayName, host: daemon.host, repoAlias: repo.alias)
+            let session = Session(
+                name: repo.displayName, host: daemon.host, repoAlias: repo.alias, daemonID: daemon.id
+            )
             store.upsert(session)
             firstAdded = firstAdded ?? session.id
         }

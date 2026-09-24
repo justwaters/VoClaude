@@ -17,6 +17,7 @@
 		83CF2E6BDA6DD0EA7DDA2881 /* UtteranceDetectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3A82BC601B30BA528E8486D5 /* UtteranceDetectorTests.swift */; };
 		A0D8A2C4E101A72C7371E159 /* CallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D59BB5E09EB9489B897FBD7A /* CallController.swift */; };
 		A12E94661C0E43946F6D9A7D /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587E1D53CC4A92937FF7D930 /* Message.swift */; };
+		B7AD83017512D876BC8BC767 /* SessionStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C2F04F09EBC65F0C89AF2F2 /* SessionStoreTests.swift */; };
 		C9FB13C57171C34A786ED286 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8958C1DA3B9293178CF9DB6 /* MainView.swift */; };
 		CA49B10ACF1B6582710D2C60 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8CAA226FB34A1E471C394E99 /* Assets.xcassets */; };
 		D9CCFAE7EFAFF2B3E19D38C2 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29C526E6FA63CDFD3E1F474B /* Session.swift */; };
@@ -46,6 +47,7 @@
 		2CEDCAA6B6C4E884DA46B1F1 /* VoClaudeTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = VoClaudeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		372D01AC1A7AF1AA35BF67C4 /* DaemonBrowser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaemonBrowser.swift; sourceTree = "<group>"; };
 		3A82BC601B30BA528E8486D5 /* UtteranceDetectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UtteranceDetectorTests.swift; sourceTree = "<group>"; };
+		4C2F04F09EBC65F0C89AF2F2 /* SessionStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStoreTests.swift; sourceTree = "<group>"; };
 		4FF5EAFC5179D2047FDAD37F /* WebSocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebSocketManager.swift; sourceTree = "<group>"; };
 		587E1D53CC4A92937FF7D930 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		597C682A3FA2CEBEC4029013 /* VoClaudeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoClaudeApp.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 		99889E1F947A169FE2301420 /* VoClaudeTests */ = {
 			isa = PBXGroup;
 			children = (
+				4C2F04F09EBC65F0C89AF2F2 /* SessionStoreTests.swift */,
 				3A82BC601B30BA528E8486D5 /* UtteranceDetectorTests.swift */,
 			);
 			path = VoClaudeTests;
@@ -264,6 +267,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B7AD83017512D876BC8BC767 /* SessionStoreTests.swift in Sources */,
 				83CF2E6BDA6DD0EA7DDA2881 /* UtteranceDetectorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -335,7 +339,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.1.1;
+				MARKETING_VERSION = 0.1.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -397,7 +401,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 14.0;
-				MARKETING_VERSION = 0.1.1;
+				MARKETING_VERSION = 0.1.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";

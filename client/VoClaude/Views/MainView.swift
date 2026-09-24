@@ -87,6 +87,9 @@ struct MainView: View {
                 ContentUnavailableView("Select a Session", systemImage: "sidebar.left")
             }
         }
+        .onChange(of: browser.daemons, initial: true) { _, daemons in
+            store.refreshHosts(from: daemons)
+        }
         .sheet(item: $pairing) { daemon in
             DaemonConnectView(daemon: daemon)
         }
@@ -95,7 +98,7 @@ struct MainView: View {
             case .new:
                 SessionEditorView(session: nil, token: nil)
             case .edit(let session):
-                SessionEditorView(session: session, token: store.token(for: session.host))
+                SessionEditorView(session: session, token: store.token(for: session.tokenKey))
             }
         }
     }

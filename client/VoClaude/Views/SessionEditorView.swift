@@ -67,7 +67,7 @@ struct SessionEditorView: View {
         if draft.name.trimmingCharacters(in: .whitespaces).isEmpty {
             draft.name = draft.repoAlias
         }
-        store.setToken(token.trimmingCharacters(in: .whitespacesAndNewlines), for: draft.host)
+        store.setToken(token.trimmingCharacters(in: .whitespacesAndNewlines), for: draft.tokenKey)
         store.upsert(draft)
         store.selectedID = draft.id
         dismiss()

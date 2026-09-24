@@ -10,6 +10,11 @@ struct Session: Identifiable, Codable, Hashable, Sendable {
     var repoAlias: String
     /// Kokoro voice ID (e.g. `bf_emma`); nil uses the daemon's default voice.
     var voice: String? = nil
+    /// Bonjour name of the daemon this session was paired with; nil for hosts added by hand.
+    var daemonID: String? = nil
+
+    /// Keychain key for this session's token: the daemon's Bonjour name survives IP changes.
+    var tokenKey: String { daemonID ?? host }
 
     /// `ws://192.168.1.100:8000/ws/session/repo_a`
     var webSocketURL: URL? {
